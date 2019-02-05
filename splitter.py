@@ -7,7 +7,7 @@ def usage():
     print(f'Usage: {os.sys.argv[0]} (-i <infile> | --in=<infile>) (-o <outdir> | --out=<outdir>) [--makedir]')
 
 
-def split_file(infile, outdir='.', makedir=False, seconds=60):
+def split_file(infile, outdir='.', makedir=False, seconds=59):
 
     if makedir and not os.path.exists(outdir):
         try:
@@ -19,11 +19,11 @@ def split_file(infile, outdir='.', makedir=False, seconds=60):
     audio = AudioSegment.from_mp3(infile)
     audio_len = int(audio.duration_seconds)
 
-    for x in range(0, audio_len * 1000, 60000):
+    for x in range(0, audio_len * 1000, seconds * 1000):
         start_secs = (x / 1000)
         segment = None
-        if float(x + 60000) < (audio.duration_seconds * 1000):
-            segment = audio[x:x + 60000]
+        if float(x + (seconds * 1000)) < (audio.duration_seconds * 1000):
+            segment = audio[x:x + (seconds * 1000)]
         else:
             segment = audio[x:]
         outpath = os.path.join(outdir,f'out_{start_secs}.flac')
